@@ -383,11 +383,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
  80004cc:	f000 f880 	bl	80005d0 <MX_GPIO_Init>
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-
-	  // Ex 1
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 1);
  80004d0:	2201      	movs	r2, #1
  80004d2:	2110      	movs	r1, #16
