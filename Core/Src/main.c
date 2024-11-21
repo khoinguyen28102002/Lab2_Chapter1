@@ -171,6 +171,7 @@ uint8_t counter = 0;
 int hour = 0;
 int min = 0;
 int sec = 0;
+uint8_t colon_state = 0;
 
 void update_led7(int hour, int min){
 	led7_SetDigit(hour/10, 0, 0);
@@ -179,9 +180,11 @@ void update_led7(int hour, int min){
 	led7_SetDigit(min%10, 3, 0);
 }
 void display_traffic_light(){
-	counter = (counter + 1)%20;
-	if(counter == 0){
+	counter = (counter + 1)%10;
+	if(counter%2 == 0){
 		sec++;
+	}else{
+		colon_state ^= 1;
 	}
 	if(sec >= 60){
 		sec = 0;
