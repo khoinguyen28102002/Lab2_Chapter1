@@ -53,7 +53,7 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void system_init();
-void shiff_number();
+void display_clock();
 //void test_7seg();
 /* USER CODE END PFP */
 
@@ -104,7 +104,7 @@ int main(void)
 	  while(!flag_timer2);
 	  flag_timer2 = 0;
 	  // main task, every 50ms
-	  shiff_number();
+	  display_clock();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -157,36 +157,46 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-int num1 = 2, num2 = 3, num3 = 5, num4 = 9;
-
 void system_init(){
 	  HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, 0);
 	  HAL_GPIO_WritePin(OUTPUT_Y1_GPIO_Port, OUTPUT_Y1_Pin, 0);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 0);
 	  timer_init();
 	  setTimer2(50);
-	  led7_SetDigit(num1, 0, 0);
-	  led7_SetDigit(num2, 1, 0);
-	  led7_SetDigit(num3, 2, 0);
-	  led7_SetDigit(num4, 3, 0);
 }
 
 uint8_t counter = 0;
+int hour = 0;
+int min = 0;
 int sec = 0;
+uint8_t colon_state = 1;
 
-void shiff_number(){
-	counter = (counter + 1)%20;
-	if(counter == 0){
-		int temp = num4;
-		num4 = num3;
-		num3 = num2;
-		num2 = num1;
-		num1 = temp;
-		led7_SetDigit(num1, 0, 0);
-		led7_SetDigit(num2, 1, 0);
-		led7_SetDigit(num3, 2, 0);
-		led7_SetDigit(num4, 3, 0);
+void update_led7(int hour, int min){
+	led7_SetDigit(hour/10, 0, 0);
+	led7_SetDigit(hour%10, 1, 0);
+	led7_SetDigit(min/10, 2, 0);
+	led7_SetDigit(min%10, 3, 0);
+}
+void display_clock(){
+	counter = (counter + 1)%10;
+	if(counter%2 == 0){
+		sec++;
+	}else{
+		colon_state ^= 1;
+		led7_SetColon(colon_state);
 	}
+	if(sec >= 60){
+		sec = 0;
+		min++;
+	}
+	if(min >= 60){
+		min = 0;
+		hour++;
+	}
+	if(hour >= 24){
+		hour = 0;
+	}
+	update_led7(hour, min);
 }
 
 
