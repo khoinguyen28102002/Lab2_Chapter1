@@ -53,9 +53,7 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void system_init();
-void test_LedDebug();
-void test_LedY0();
-void test_LedY1();
+void display_clock();
 //void test_7seg();
 /* USER CODE END PFP */
 
@@ -106,7 +104,7 @@ int main(void)
 	  while(!flag_timer2);
 	  flag_timer2 = 0;
 	  // main task, every 50ms
-	  display_traffic_light();
+	  display_clock();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -171,7 +169,7 @@ uint8_t counter = 0;
 int hour = 0;
 int min = 0;
 int sec = 0;
-uint8_t colon_state = 0;
+uint8_t colon_state = 1;
 
 void update_led7(int hour, int min){
 	led7_SetDigit(hour/10, 0, 0);
@@ -179,12 +177,13 @@ void update_led7(int hour, int min){
 	led7_SetDigit(min/10, 2, 0);
 	led7_SetDigit(min%10, 3, 0);
 }
-void display_traffic_light(){
+void display_clock(){
 	counter = (counter + 1)%10;
 	if(counter%2 == 0){
 		sec++;
 	}else{
 		colon_state ^= 1;
+		led7_SetColon(colon_state);
 	}
 	if(sec >= 60){
 		sec = 0;
@@ -197,6 +196,7 @@ void display_traffic_light(){
 	if(hour >= 24){
 		hour = 0;
 	}
+	update_led7(hour, min);
 }
 
 

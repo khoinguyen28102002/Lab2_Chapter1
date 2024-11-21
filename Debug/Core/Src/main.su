@@ -1,7 +1,6 @@
-main.c:71:5:main	8	static
-main.c:124:6:SystemClock_Config	88	static
-main.c:165:6:system_init	8	static
-main.c:179:6:test_LedDebug	8	static
-main.c:186:6:test_LedY0	8	static
-main.c:204:6:test_LedY1	8	static
-main.c:229:6:Error_Handler	4	static,ignoring_inline_asm
+main.c:69:5:main	8	static
+main.c:119:6:SystemClock_Config	88	static
+main.c:160:6:system_init	8	static
+main.c:174:6:update_led7	16	static
+main.c:180:6:display_clock	8	static
+main.c:209:6:Error_Handler	4	static,ignoring_inline_asm
