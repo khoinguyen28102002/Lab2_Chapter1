@@ -168,40 +168,32 @@ void system_init(){
 }
 
 uint8_t counter = 0;
-uint8_t cur_sec = 0;
-uint8_t led_state = 2;
+int hour = 0;
+int min = 0;
+int sec = 0;
 
+void update_led7(int hour, int min){
+	led7_SetDigit(hour/10, 0, 0);
+	led7_SetDigit(hour%10, 1, 0);
+	led7_SetDigit(min/10, 2, 0);
+	led7_SetDigit(min%10, 3, 0);
+}
 void display_traffic_light(){
 	counter = (counter + 1)%20;
 	if(counter == 0){
-		cur_sec++;
+		sec++;
 	}
-	if(led_state == 2){
-	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 0); // turn off red led
-	  HAL_GPIO_WritePin(OUTPUT_Y1_GPIO_Port, OUTPUT_Y1_Pin, 0); // turn off yellow led
-	  HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, 1); // turn on green led
-	  if(cur_sec == 3){
-		  cur_sec = 0;
-		  led_state = 1;
-	  }
-	}else if(led_state == 1){
-	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 0); // turn off red led
-	  HAL_GPIO_WritePin(OUTPUT_Y1_GPIO_Port, OUTPUT_Y1_Pin, 1); // turn on yellow led
-	  HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, 0); // turn off green led
-	  if(cur_sec == 1){
-		  cur_sec = 0;
-		  led_state = 0;
-	  }
-	}else if(led_state == 0){
-	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 1); // turn on red led
-	  HAL_GPIO_WritePin(OUTPUT_Y1_GPIO_Port, OUTPUT_Y1_Pin, 0); // turn off yellow led
-	  HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, 0); // turn off green led
-	  if(cur_sec = 5){
-		  cur_sec = 0;
-		  led_state = 2;
-	  }
+	if(sec >= 60){
+		sec = 0;
+		min++;
 	}
-
+	if(min >= 60){
+		min = 0;
+		hour++;
+	}
+	if(hour >= 24){
+		hour = 0;
+	}
 }
 
 
