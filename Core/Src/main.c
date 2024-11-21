@@ -53,9 +53,7 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void system_init();
-void test_LedDebug();
-void test_LedY0();
-void test_LedY1();
+void display_traffic_light();
 //void test_7seg();
 /* USER CODE END PFP */
 
@@ -196,7 +194,7 @@ void display_traffic_light(){
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 1); // turn on red led
 	  HAL_GPIO_WritePin(OUTPUT_Y1_GPIO_Port, OUTPUT_Y1_Pin, 0); // turn off yellow led
 	  HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, 0); // turn off green led
-	  if(cur_sec = 5){
+	  if(cur_sec == 5){
 		  cur_sec = 0;
 		  led_state = 2;
 	  }
